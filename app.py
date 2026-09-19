@@ -167,14 +167,17 @@ with tab1:
     st.dataframe(df_monthly, use_container_width=True)
 
 with tab2:
-    weeks_to_show = st.slider(
-        "Forecast Horizon (Weeks):",
-        min_value=4,
-        max_value=len(df_future),
-        value=12,
-        step=4,
-        help="Slide to view up to 52 weeks (Full Year until May 2027)"
+    horizon_options = {
+        "Next 12 Weeks (1 Quarter — Operational Focus)": 12,
+        "Next 26 Weeks (6 Months — Medium Term)": 26,
+        "Full 52 Weeks (Full Year — May 2027)": len(df_future),
+    }
+    selected_horizon = st.selectbox(
+        "Select Schedule Horizon:",
+        options=list(horizon_options.keys()),
+        index=2,
     )
+    weeks_to_show = horizon_options[selected_horizon]
     df_weekly = df_future.head(weeks_to_show).copy()
     df_weekly = df_weekly.rename(columns={'Forecast_Week': 'Forecast Week', 'Projected_Seat_Covers': 'Projected Seat Covers'})
     df_weekly['Shift Target'] = (df_weekly['Projected Seat Covers'] // 5 + 1).astype(str) + " units/shift"
@@ -218,4 +221,4 @@ with col_chart2:
     )
     fig_bar.update_xaxes(showgrid=False, linecolor='#CBD5E1', tickcolor='#CBD5E1', color='#CBD5E1', gridcolor='#334155')
     fig_bar.update_yaxes(showgrid=True, gridcolor='#334155', linecolor='#CBD5E1', tickcolor='#CBD5E1', color='#CBD5E1')
-    st.plotly_chart(fig_bar, width='stretch')
+    st.plotly_chart(fig_bar, use_container_width=True)
