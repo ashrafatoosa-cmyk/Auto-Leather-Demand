@@ -46,12 +46,12 @@ Immediate planning targets are synthesized into custom CSS-styled metric tiles:
 * **Forecast Model:** LSTM Neural Net (Production Planner Engine).
 
 ### Multi-Model Forecast Canvas
-*<img align="center" src="https://via.placeholder.com/800x400.png?text=Forecast+Comparison+Line+Chart" alt="Forecast Comparison Line Chart">*
+*<img align="center" src="assets/forecast_chart.png" alt="Forecast Comparison Line Chart">*
 
 An interactive visualization comparing Actual Demand against the predicted curves of the LSTM and SARIMAX models. The module allows operations managers to toggle between high-fidelity **Weekly Views** and smoothed **Monthly Views**, aligning directly with raw material procurement cycles.
 
 ### Customer & Portfolio Diagnostics
-*<img align="center" src="https://via.placeholder.com/800x400.png?text=Distribution+Donut+and+Bar+Charts" alt="Distribution Donut and Bar Charts">*
+*<img align="center" src="assets/distribution_charts.png" alt="Distribution Donut and Bar Charts">*
 
 * **OEM Brand Breakdown:** A donut chart highlighting market share concentration (e.g., Toyota at 49.8%, Volkswagen at 13.7%, Hyundai at 5.27%).
 * **Raw Material Color Consumption:** A Pareto bar chart revealing extreme preference concentration, with Black leather hide commanding 91.7% of all inbound orders.
