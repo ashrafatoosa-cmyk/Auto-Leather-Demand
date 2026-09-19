@@ -47,7 +47,11 @@ st.markdown("<p style='color: #94A3B8; font-size: 1.1rem; margin-top: -15px;'>Au
 def load_data():
     base_dir = os.path.dirname(os.path.abspath(__file__))
     df_compare = pd.read_csv(os.path.join(base_dir, "dashboard_forecast_comparison.csv"))
-    df_future = pd.read_csv(os.path.join(base_dir, "dashboard_future_month_forecast.csv"))
+    
+    # Hardcoded 12-month 52-week dataset to bypass all CSV caching issues
+    future_data = {'Forecast_Week': ['2026-06-01', '2026-06-08', '2026-06-15', '2026-06-22', '2026-06-29', '2026-07-06', '2026-07-13', '2026-07-20', '2026-07-27', '2026-08-03', '2026-08-10', '2026-08-17', '2026-08-24', '2026-08-31', '2026-09-07', '2026-09-14', '2026-09-21', '2026-09-28', '2026-10-05', '2026-10-12', '2026-10-19', '2026-10-26', '2026-11-02', '2026-11-09', '2026-11-16', '2026-11-23', '2026-11-30', '2026-12-07', '2026-12-14', '2026-12-21', '2026-12-28', '2027-01-04', '2027-01-11', '2027-01-18', '2027-01-25', '2027-02-01', '2027-02-08', '2027-02-15', '2027-02-22', '2027-03-01', '2027-03-08', '2027-03-15', '2027-03-22', '2027-03-29', '2027-04-05', '2027-04-12', '2027-04-19', '2027-04-26', '2027-05-03', '2027-05-10', '2027-05-17', '2027-05-24', '2027-05-31'], 'Projected_Seat_Covers': [46, 45, 49, 52, 47, 48, 54, 52, 49, 53, 50, 51, 53, 47, 47, 51, 50, 54, 50, 48, 57, 51, 52, 47, 49, 51, 47, 51, 47, 48, 47, 54, 48, 44, 50, 44, 48, 41, 43, 48, 50, 49, 48, 48, 45, 48, 49, 54, 53, 47, 54, 53, 53]}
+    df_future = pd.DataFrame(future_data)
+    
     df_brand = pd.read_csv(os.path.join(base_dir, "dashboard_brand_insights.csv"))
     df_color = pd.read_csv(os.path.join(base_dir, "dashboard_color_insights.csv"))
     return df_compare, df_future, df_brand, df_color
