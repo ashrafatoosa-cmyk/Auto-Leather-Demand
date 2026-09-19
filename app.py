@@ -138,7 +138,7 @@ fig_line.update_layout(
 fig_line.update_xaxes(showgrid=False, linecolor='#CBD5E1', tickcolor='#CBD5E1', color='#CBD5E1', gridcolor='#334155')
 fig_line.update_yaxes(showgrid=True, gridcolor='#334155', linecolor='#CBD5E1', tickcolor='#CBD5E1', color='#CBD5E1')
 
-st.plotly_chart(fig_line, width='stretch')
+st.plotly_chart(fig_line, use_container_width=True)
 
 # 3. Rolling 4-Week Outlook Table
 st.subheader("Rolling 4-Week Outlook")
