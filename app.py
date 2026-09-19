@@ -44,7 +44,6 @@ st.title("🏎️ AutoLeather Intelligence — Factory Demand & Upholstery DSS")
 st.markdown("<p style='color: #94A3B8; font-size: 1.1rem; margin-top: -15px;'>Automotive Interior Cutting & Sewing Operations | OEM & Aftermarket Horizon.</p>", unsafe_allow_html=True)
 
 # Load Data
-@st.cache_data
 def load_data():
     base_dir = os.path.dirname(os.path.abspath(__file__))
     df_compare = pd.read_csv(os.path.join(base_dir, "dashboard_forecast_comparison.csv"))
