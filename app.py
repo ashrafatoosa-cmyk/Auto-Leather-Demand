@@ -65,7 +65,7 @@ st.markdown('<div style="border-top: 3px solid #38BDF8; margin-top: -10px; margi
 
 col1, col2, col3, col4 = st.columns(4)
 
-total_projected_demand = df_future['Projected_Seat_Covers'].sum()
+total_projected_demand = df_future['Projected_Seat_Covers'].head(4).sum()
 top_brand = df_brand.iloc[0]
 top_color = df_color.iloc[0]
 
@@ -141,26 +141,35 @@ fig_line.update_yaxes(showgrid=True, gridcolor='#334155', linecolor='#CBD5E1', t
 st.plotly_chart(fig_line, use_container_width=True)
 
 # 3. Forward Production Outlook
-st.subheader("Forward Production Outlook")
+st.subheader("Forward Production Outlook (1-Year Horizon)")
 
-tab1, tab2 = st.tabs(["Rolling Weekly Schedule", "Monthly Aggregated Summary"])
+tab1, tab2 = st.tabs(["Monthly Horizon (June 2026 – May 2027)", "Weekly Rolling Schedule"])
 
 with tab1:
-    df_weekly = df_future.copy()
-    df_weekly['Horizon / Period'] = ["Week " + str(i+1) for i in range(len(df_weekly))]
-    df_weekly = df_weekly.rename(columns={'Forecast_Week': 'Target Date', 'Projected_Seat_Covers': 'Projected Seat Covers'})
-    df_weekly = df_weekly[['Horizon / Period', 'Target Date', 'Projected Seat Covers']]
-    st.dataframe(df_weekly, use_container_width=True)
-    st.info("💡 **Practical Note:** Floor managers are advised to stock black leather rolls ahead of time to meet the projected dominant material colour demand.")
-
-with tab2:
     df_monthly = df_future.copy()
     df_monthly['Forecast_Week'] = pd.to_datetime(df_monthly['Forecast_Week'])
     df_monthly = df_monthly.set_index('Forecast_Week').resample('ME').sum().reset_index()
-    df_monthly['Target Month'] = df_monthly['Forecast_Week'].dt.strftime('%B %Y')
-    df_monthly = df_monthly.rename(columns={'Projected_Seat_Covers': 'Total Projected Seat Covers'})
-    df_monthly = df_monthly[['Target Month', 'Total Projected Seat Covers']]
+    df_monthly['Month'] = df_monthly['Forecast_Week'].dt.strftime('%B %Y')
+    df_monthly['Projected Seat Covers'] = df_monthly['Projected_Seat_Covers']
+    df_monthly['Safety Buffer (Units)'] = (df_monthly['Projected Seat Covers'] * 0.15).astype(int)
+    
+    def get_status(idx):
+        if idx <= 2: return "✅ Sourced"
+        elif idx <= 6: return "⏳ Pending"
+        else: return "⚠️ Action Required"
+        
+    df_monthly['Procurement Status'] = [get_status(i) for i in range(len(df_monthly))]
+    
+    df_monthly = df_monthly[['Month', 'Projected Seat Covers', 'Safety Buffer (Units)', 'Procurement Status']]
     st.dataframe(df_monthly, use_container_width=True)
+
+with tab2:
+    df_weekly = df_future.head(12).copy()
+    df_weekly = df_weekly.rename(columns={'Forecast_Week': 'Forecast Week', 'Projected_Seat_Covers': 'Projected Seat Covers'})
+    df_weekly['Shift Target'] = (df_weekly['Projected Seat Covers'] // 5 + 1).astype(str) + " units/shift"
+    df_weekly = df_weekly[['Forecast Week', 'Projected Seat Covers', 'Shift Target']]
+    st.dataframe(df_weekly, use_container_width=True)
+    st.info("💡 **Practical Note:** Floor managers are advised to stock black leather rolls ahead of time to meet the projected dominant material colour demand.")
 
 # 4. Demand Distribution Breakdown
 st.subheader("Demand Distribution Breakdown")
