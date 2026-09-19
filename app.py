@@ -167,7 +167,15 @@ with tab1:
     st.dataframe(df_monthly, use_container_width=True)
 
 with tab2:
-    df_weekly = df_future.head(12).copy()
+    weeks_to_show = st.slider(
+        "Forecast Horizon (Weeks):",
+        min_value=4,
+        max_value=len(df_future),
+        value=12,
+        step=4,
+        help="Slide to view up to 52 weeks (Full Year until May 2027)"
+    )
+    df_weekly = df_future.head(weeks_to_show).copy()
     df_weekly = df_weekly.rename(columns={'Forecast_Week': 'Forecast Week', 'Projected_Seat_Covers': 'Projected Seat Covers'})
     df_weekly['Shift Target'] = (df_weekly['Projected Seat Covers'] // 5 + 1).astype(str) + " units/shift"
     df_weekly = df_weekly[['Forecast Week', 'Projected Seat Covers', 'Shift Target']]
