@@ -140,29 +140,27 @@ fig_line.update_yaxes(showgrid=True, gridcolor='#334155', linecolor='#CBD5E1', t
 
 st.plotly_chart(fig_line, use_container_width=True)
 
-# 3. Rolling Production Schedule
-st.subheader("Rolling Production Schedule")
+# 3. Forward Production Outlook
+st.subheader("Forward Production Outlook")
 
-df_future['Forecast_Week'] = pd.to_datetime(df_future['Forecast_Week'])
-
-tab1, tab2 = st.tabs(["Weekly Schedule", "Monthly Aggregation"])
+tab1, tab2 = st.tabs(["Rolling Weekly Schedule", "Monthly Aggregated Summary"])
 
 with tab1:
     df_weekly = df_future.copy()
-    df_weekly['Target Date'] = df_weekly['Forecast_Week'].dt.strftime('%Y-%m-%d')
-    df_weekly['Horizon / Period'] = ['Week ' + str(i+1) for i in range(len(df_weekly))]
-    df_weekly = df_weekly.rename(columns={'Projected_Seat_Covers': 'Projected Seat Covers'})
-    df_weekly_display = df_weekly[['Horizon / Period', 'Target Date', 'Projected Seat Covers']]
-    st.dataframe(df_weekly_display, use_container_width=True, hide_index=True)
+    df_weekly['Horizon / Period'] = ["Week " + str(i+1) for i in range(len(df_weekly))]
+    df_weekly = df_weekly.rename(columns={'Forecast_Week': 'Target Date', 'Projected_Seat_Covers': 'Projected Seat Covers'})
+    df_weekly = df_weekly[['Horizon / Period', 'Target Date', 'Projected Seat Covers']]
+    st.dataframe(df_weekly, use_container_width=True)
+    st.info("💡 **Practical Note:** Floor managers are advised to stock black leather rolls ahead of time to meet the projected dominant material colour demand.")
 
 with tab2:
-    df_monthly = df_future.set_index('Forecast_Week').resample('ME').sum().reset_index()
+    df_monthly = df_future.copy()
+    df_monthly['Forecast_Week'] = pd.to_datetime(df_monthly['Forecast_Week'])
+    df_monthly = df_monthly.set_index('Forecast_Week').resample('ME').sum().reset_index()
     df_monthly['Target Month'] = df_monthly['Forecast_Week'].dt.strftime('%B %Y')
     df_monthly = df_monthly.rename(columns={'Projected_Seat_Covers': 'Total Projected Seat Covers'})
-    df_monthly_display = df_monthly[['Target Month', 'Total Projected Seat Covers']]
-    st.dataframe(df_monthly_display, use_container_width=True, hide_index=True)
-
-st.info("💡 **Practical Note:** Floor managers are advised to stock black leather rolls ahead of time to meet the projected dominant material colour demand.")
+    df_monthly = df_monthly[['Target Month', 'Total Projected Seat Covers']]
+    st.dataframe(df_monthly, use_container_width=True)
 
 # 4. Demand Distribution Breakdown
 st.subheader("Demand Distribution Breakdown")
