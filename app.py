@@ -40,7 +40,7 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.title("🏎️ AutoLeather Intelligence — Factory Demand & Upholstery DSS")
+st.title("🏎️ AutoLeather Intelligence Factory Demand & Upholstery DSS")
 st.markdown("<p style='color: #94A3B8; font-size: 1.1rem; margin-top: -15px;'>Automotive Interior Cutting & Sewing Operations | OEM & Aftermarket Horizon.</p>", unsafe_allow_html=True)
 
 # Load Data
