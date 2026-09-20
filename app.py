@@ -3,6 +3,7 @@ import pandas as pd
 import plotly.express as px
 import plotly.graph_objects as go
 import os
+import base64
 
 from PIL import Image
 
@@ -27,6 +28,34 @@ st.set_page_config(
 # Inject Custom CSS for Dark Executive Appearance
 st.markdown("""
 <style>
+    /* Header layout */
+    .header-container {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 12px;
+    }
+    .header-logo {
+        height: 44px;
+        width: auto;
+        object-fit: contain;
+        flex-shrink: 0;
+    }
+    .header-text h1 {
+        margin: 0 !important;
+        padding: 0 !important;
+        font-size: 1.65rem !important;
+        font-weight: 700 !important;
+        color: #F8FAFC !important;
+        line-height: 1.2 !important;
+    }
+    .header-text p {
+        color: #94A3B8 !important;
+        font-size: 0.95rem !important;
+        margin: 3px 0 0 0 !important;
+        padding: 0 !important;
+    }
+
     /* Metric Tiles CSS */
     .metric-tile {
         background: #1E293B;
@@ -55,7 +84,24 @@ st.markdown("""
         color: #CBD5E1;
         margin-top: 8px;
     }
+
     @media (max-width: 768px) {
+        .header-container {
+            gap: 10px !important;
+            margin-bottom: 8px !important;
+        }
+        .header-logo {
+            height: 30px !important;
+            max-width: 60px !important;
+        }
+        .header-text h1 {
+            font-size: 1.15rem !important;
+            line-height: 1.25 !important;
+        }
+        .header-text p {
+            font-size: 0.74rem !important;
+            margin-top: 2px !important;
+        }
         h1, .stHeading h1, [data-testid="stHeading"] h1 {
             font-size: 1.35rem !important;
             line-height: 1.3 !important;
@@ -95,12 +141,20 @@ st.markdown("""
 
 if os.path.exists(logo_path):
     try:
-        col_logo, col_title = st.columns([1, 8], vertical_alignment="center")
-    except TypeError:
-        col_logo, col_title = st.columns([1, 8])
-    with col_logo:
-        st.image(logo_path, width=120)
-    with col_title:
+        with open(logo_path, "rb") as f:
+            logo_b64 = base64.b64encode(f.read()).decode()
+        mime = "image/png" if logo_path.endswith(".png") else "image/avif"
+        st.markdown(f"""
+        <div class="header-container">
+            <img src="data:{mime};base64,{logo_b64}" class="header-logo" alt="Auto Leathers Logo" />
+            <div class="header-text">
+                <h1>AutoLeather Intelligence Factory Demand & Upholstery DSS</h1>
+                <p>Automotive Interior Cutting & Sewing Operations | OEM & Aftermarket Horizon.</p>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
+    except Exception:
+        st.image(logo_path, width=55)
         st.title("AutoLeather Intelligence Factory Demand & Upholstery DSS")
         st.markdown("<p style='color: #94A3B8; font-size: 1.1rem; margin-top: -15px;'>Automotive Interior Cutting & Sewing Operations | OEM & Aftermarket Horizon.</p>", unsafe_allow_html=True)
 else:
