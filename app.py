@@ -55,6 +55,15 @@ st.markdown("""
         color: #CBD5E1;
         margin-top: 8px;
     }
+    @media (max-width: 640px) {
+        .metric-tile {
+            padding: 14px;
+            margin-bottom: 12px;
+        }
+        .metric-value {
+            font-size: 1.5rem;
+        }
+    }
 </style>
 """, unsafe_allow_html=True)
 
