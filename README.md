@@ -1,4 +1,4 @@
-# 🏎️ AutoLeather Intelligence — Factory Demand & Upholstery DSS
+# AutoLeather Intelligence Factory Demand & Upholstery DSS
 
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)
 ![Streamlit](https://img.shields.io/badge/Streamlit-1.28%2B-red.svg)

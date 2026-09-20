@@ -4,7 +4,25 @@ import plotly.express as px
 import plotly.graph_objects as go
 import os
 
-st.set_page_config(page_title="Auto Leather Demand Intelligence Dashboard", layout="wide")
+from PIL import Image
+
+base_dir = os.path.dirname(os.path.abspath(__file__))
+logo_png_path = os.path.join(base_dir, "assets", "logo.png")
+logo_avif_path = os.path.join(base_dir, "assets", "logo-small-2.avif")
+logo_path = logo_png_path if os.path.exists(logo_png_path) else logo_avif_path
+
+page_icon = "🏎️"
+if os.path.exists(logo_path):
+    try:
+        page_icon = Image.open(logo_path)
+    except Exception:
+        page_icon = "🏎️"
+
+st.set_page_config(
+    page_title="AutoLeather Intelligence Factory Demand & Upholstery DSS",
+    page_icon=page_icon,
+    layout="wide"
+)
 
 # Inject Custom CSS for Dark Executive Appearance
 st.markdown("""
@@ -40,8 +58,19 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-st.title("🏎️ AutoLeather Intelligence Factory Demand & Upholstery DSS")
-st.markdown("<p style='color: #94A3B8; font-size: 1.1rem; margin-top: -15px;'>Automotive Interior Cutting & Sewing Operations | OEM & Aftermarket Horizon.</p>", unsafe_allow_html=True)
+if os.path.exists(logo_path):
+    try:
+        col_logo, col_title = st.columns([1, 8], vertical_alignment="center")
+    except TypeError:
+        col_logo, col_title = st.columns([1, 8])
+    with col_logo:
+        st.image(logo_path, width=120)
+    with col_title:
+        st.title("AutoLeather Intelligence Factory Demand & Upholstery DSS")
+        st.markdown("<p style='color: #94A3B8; font-size: 1.1rem; margin-top: -15px;'>Automotive Interior Cutting & Sewing Operations | OEM & Aftermarket Horizon.</p>", unsafe_allow_html=True)
+else:
+    st.title("AutoLeather Intelligence Factory Demand & Upholstery DSS")
+    st.markdown("<p style='color: #94A3B8; font-size: 1.1rem; margin-top: -15px;'>Automotive Interior Cutting & Sewing Operations | OEM & Aftermarket Horizon.</p>", unsafe_allow_html=True)
 
 # Load Data
 def load_data():
