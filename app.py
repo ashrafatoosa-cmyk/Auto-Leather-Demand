@@ -55,13 +55,39 @@ st.markdown("""
         color: #CBD5E1;
         margin-top: 8px;
     }
-    @media (max-width: 640px) {
+    @media (max-width: 768px) {
+        h1, .stHeading h1, [data-testid="stHeading"] h1 {
+            font-size: 1.35rem !important;
+            line-height: 1.3 !important;
+        }
+        h2, .stHeading h2, [data-testid="stHeading"] h2,
+        h3, .stHeading h3, [data-testid="stHeading"] h3 {
+            font-size: 1.1rem !important;
+            line-height: 1.3 !important;
+            margin-top: 12px !important;
+            margin-bottom: 6px !important;
+        }
+        p, .stMarkdown p, span {
+            font-size: 0.84rem !important;
+        }
         .metric-tile {
-            padding: 14px;
-            margin-bottom: 12px;
+            padding: 10px 8px !important;
+            margin-bottom: 8px !important;
+        }
+        .metric-label {
+            font-size: 0.65rem !important;
+            margin-bottom: 4px !important;
         }
         .metric-value {
-            font-size: 1.5rem;
+            font-size: 1.35rem !important;
+        }
+        .metric-subtext {
+            font-size: 0.72rem !important;
+            margin-top: 4px !important;
+        }
+        button[data-baseweb="tab"] {
+            font-size: 0.82rem !important;
+            padding: 6px 10px !important;
         }
     }
 </style>
@@ -135,12 +161,12 @@ if view_mode == "Weekly View":
     plot_df = df_compare
     mode_str = 'lines'
     
-    st.markdown("<p style='color: #94A3B8; font-size: 0.9rem;'><strong>SARIMAX Baseline</strong> WAPE: 32.91% | MAPE: 48.25% &nbsp;&nbsp;&nbsp;&nbsp; <strong>Multivariate LSTM</strong> WAPE: 30.78% | MAPE: 44.51%</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #94A3B8; font-size: 0.78rem; margin-bottom: 6px;'><strong>SARIMAX Baseline:</strong> WAPE 32.91% | MAPE 48.25% &nbsp;&bull;&nbsp; <strong>Multivariate LSTM:</strong> WAPE 30.78% | MAPE 44.51%</p>", unsafe_allow_html=True)
 else:
     plot_df = df_compare.set_index('Date').resample('ME').sum().reset_index()
     mode_str = 'lines+markers'
     
-    st.markdown("<p style='color: #94A3B8; font-size: 0.9rem;'><strong>SARIMAX Baseline (Monthly)</strong> WAPE: 19.79% | MAPE: 21.46% &nbsp;&nbsp;&nbsp;&nbsp; <strong>Multivariate LSTM (Monthly)</strong> WAPE: 18.69% | MAPE: 19.54%</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #94A3B8; font-size: 0.78rem; margin-bottom: 6px;'><strong>SARIMAX Baseline (Monthly):</strong> WAPE 19.79% | MAPE 21.46% &nbsp;&bull;&nbsp; <strong>Multivariate LSTM (Monthly):</strong> WAPE 18.69% | MAPE 19.54%</p>", unsafe_allow_html=True)
 
 fig_line = go.Figure()
 
@@ -164,22 +190,23 @@ fig_line.add_trace(go.Scatter(x=plot_df['Date'], y=plot_df['SARIMAX_Forecast'],
 
 # Clean Plotly chart layouts
 fig_line.update_layout(
-    title=f"Actual vs Forecasted Demand ({view_mode})",
-    xaxis_title="Date", 
+    title=dict(text=f"Actual vs Forecasted Demand ({view_mode})", font=dict(size=13, color='#F8FAFC')),
+    xaxis_title=None, 
     yaxis_title="Volume",
+    height=300,
     plot_bgcolor='#1E293B',
     paper_bgcolor='#1E293B',
     legend=dict(
-        orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1,
-        font=dict(color='#F8FAFC')
+        orientation="h", yanchor="top", y=-0.25, xanchor="center", x=0.5,
+        font=dict(size=9.5, color='#F8FAFC')
     ),
-    font=dict(color="#F8FAFC"),
-    margin=dict(l=40, r=40, t=60, b=40)
+    font=dict(size=10, color="#F8FAFC"),
+    margin=dict(l=35, r=15, t=35, b=45)
 )
-fig_line.update_xaxes(showgrid=False, linecolor='#CBD5E1', tickcolor='#CBD5E1', color='#CBD5E1', gridcolor='#334155')
-fig_line.update_yaxes(showgrid=True, gridcolor='#334155', linecolor='#CBD5E1', tickcolor='#CBD5E1', color='#CBD5E1')
+fig_line.update_xaxes(showgrid=False, linecolor='#CBD5E1', tickcolor='#CBD5E1', color='#CBD5E1', gridcolor='#334155', tickfont=dict(size=9))
+fig_line.update_yaxes(showgrid=True, gridcolor='#334155', linecolor='#CBD5E1', tickcolor='#CBD5E1', color='#CBD5E1', tickfont=dict(size=9))
 
-st.plotly_chart(fig_line, use_container_width=True)
+st.plotly_chart(fig_line, use_container_width=True, config={'displayModeBar': False})
 
 # 3. Forward Production Outlook
 st.subheader("Forward Production Outlook (1-Year Horizon)")
@@ -202,7 +229,7 @@ with tab1:
     df_monthly['Procurement Status'] = [get_status(i) for i in range(len(df_monthly))]
     
     df_monthly = df_monthly[['Month', 'Projected Seat Covers', 'Safety Buffer (Units)', 'Procurement Status']]
-    st.dataframe(df_monthly, use_container_width=True)
+    st.dataframe(df_monthly, use_container_width=True, hide_index=True)
 
 with tab2:
     horizon_options = {
@@ -220,7 +247,7 @@ with tab2:
     df_weekly = df_weekly.rename(columns={'Forecast_Week': 'Forecast Week', 'Projected_Seat_Covers': 'Projected Seat Covers'})
     df_weekly['Shift Target'] = (df_weekly['Projected Seat Covers'] // 5 + 1).astype(str) + " units/shift"
     df_weekly = df_weekly[['Forecast Week', 'Projected Seat Covers', 'Shift Target']]
-    st.dataframe(df_weekly, use_container_width=True)
+    st.dataframe(df_weekly, use_container_width=True, hide_index=True)
     st.info("💡 **Practical Note:** Floor managers are advised to stock black leather rolls ahead of time to meet the projected dominant material colour demand.")
 
 # 4. Demand Distribution Breakdown
@@ -239,24 +266,30 @@ with col_chart1:
                        title="Volume Distribution by Brand",
                        color_discrete_sequence=dark_theme_palette)
     fig_donut.update_layout(
+        title=dict(text="Volume Distribution by Brand", font=dict(size=13, color='#F8FAFC')),
+        height=260,
         plot_bgcolor='#1E293B',
         paper_bgcolor='#1E293B',
-        font=dict(color="#F8FAFC"),
-        legend=dict(font=dict(color='#F8FAFC'))
+        font=dict(size=10, color="#F8FAFC"),
+        legend=dict(font=dict(size=9, color='#F8FAFC')),
+        margin=dict(l=10, r=10, t=35, b=15)
     )
     fig_donut.update_traces(marker=dict(line=dict(color='#1E293B', width=2)))
-    st.plotly_chart(fig_donut, use_container_width=True)
+    st.plotly_chart(fig_donut, use_container_width=True, config={'displayModeBar': False})
 
 with col_chart2:
     fig_bar = px.bar(df_color, x='Colour', y='Total_Orders', title="Customer Color Preferences",
                      color='Colour', color_discrete_sequence=dark_theme_palette)
     
     fig_bar.update_layout(
+        title=dict(text="Customer Color Preferences", font=dict(size=13, color='#F8FAFC')),
+        height=260,
         plot_bgcolor='#1E293B',
         paper_bgcolor='#1E293B',
-        font=dict(color="#F8FAFC"),
-        showlegend=False
+        font=dict(size=10, color="#F8FAFC"),
+        showlegend=False,
+        margin=dict(l=35, r=15, t=35, b=30)
     )
-    fig_bar.update_xaxes(showgrid=False, linecolor='#CBD5E1', tickcolor='#CBD5E1', color='#CBD5E1', gridcolor='#334155')
-    fig_bar.update_yaxes(showgrid=True, gridcolor='#334155', linecolor='#CBD5E1', tickcolor='#CBD5E1', color='#CBD5E1')
-    st.plotly_chart(fig_bar, use_container_width=True)
+    fig_bar.update_xaxes(showgrid=False, linecolor='#CBD5E1', tickcolor='#CBD5E1', color='#CBD5E1', gridcolor='#334155', tickfont=dict(size=9))
+    fig_bar.update_yaxes(showgrid=True, gridcolor='#334155', linecolor='#CBD5E1', tickcolor='#CBD5E1', color='#CBD5E1', tickfont=dict(size=9))
+    st.plotly_chart(fig_bar, use_container_width=True, config={'displayModeBar': False})
