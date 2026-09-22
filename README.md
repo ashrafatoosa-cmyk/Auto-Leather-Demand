@@ -25,10 +25,10 @@ The predictive engine of the DSS relies on comparing classical econometric forec
 
 The models were evaluated over a hold-out test horizon. Smoothing the high-frequency weekly noise into monthly procurement commitments yields the following performance metrics:
 
-| Model | Aggregation Level | WAPE (Weighted Absolute Percentage Error) | MAPE (Mean Absolute Percentage Error) |
+| Model | Aggregation Level | WAPE (Weighted Absolute Percentage Error) | MAE (Mean Absolute Error) |
 |:---|:---:|:---:|:---:|
-| **Multivariate LSTM** | Monthly | **18.69%** | **19.54%** |
-| **SARIMAX Baseline** | Monthly | 19.79% | 21.46% |
+| **Multivariate LSTM** | Monthly | **18.69%** | **19.54 units** |
+| **SARIMAX Baseline** | Monthly | 19.79% | 21.46 units |
 
 The LSTM neural network serves as the primary production planner engine, consistently outperforming the econometric baseline.
 

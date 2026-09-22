@@ -215,12 +215,12 @@ if view_mode == "Weekly View":
     plot_df = df_compare
     mode_str = 'lines'
     
-    st.markdown("<p style='color: #94A3B8; font-size: 0.78rem; margin-bottom: 6px;'><strong>SARIMAX Baseline:</strong> WAPE 32.91% | MAPE 48.25% &nbsp;&bull;&nbsp; <strong>Multivariate LSTM:</strong> WAPE 30.78% | MAPE 44.51%</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #94A3B8; font-size: 0.78rem; margin-bottom: 6px;'><strong>SARIMAX Baseline:</strong> WAPE: 32.91% | MAE: 48.25 units &nbsp;&bull;&nbsp; <strong>Multivariate LSTM:</strong> WAPE: 30.78% | MAE: 44.51 units</p>", unsafe_allow_html=True)
 else:
     plot_df = df_compare.set_index('Date').resample('ME').sum().reset_index()
     mode_str = 'lines+markers'
     
-    st.markdown("<p style='color: #94A3B8; font-size: 0.78rem; margin-bottom: 6px;'><strong>SARIMAX Baseline (Monthly):</strong> WAPE 19.79% | MAPE 21.46% &nbsp;&bull;&nbsp; <strong>Multivariate LSTM (Monthly):</strong> WAPE 18.69% | MAPE 19.54%</p>", unsafe_allow_html=True)
+    st.markdown("<p style='color: #94A3B8; font-size: 0.78rem; margin-bottom: 6px;'><strong>SARIMAX Baseline (Monthly):</strong> WAPE: 19.79% | MAE: 21.46 units &nbsp;&bull;&nbsp; <strong>Multivariate LSTM (Monthly):</strong> WAPE: 18.69% | MAE: 19.54 units</p>", unsafe_allow_html=True)
 
 fig_line = go.Figure()
 
