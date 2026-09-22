@@ -1,10 +1,16 @@
 # AutoLeather Intelligence Factory Demand & Upholstery DSS
 
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://auto-leather-demand.streamlit.app/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-auto--leather--demand-FF4B4B?style=flat&logo=streamlit&logoColor=white)](https://auto-leather-demand.streamlit.app/)
 ![Python](https://img.shields.io/badge/Python-3.8%2B-blue.svg)
 ![Streamlit](https://img.shields.io/badge/Streamlit-1.28%2B-red.svg)
 ![Pandas](https://img.shields.io/badge/Pandas-2.0%2B-150458.svg)
 ![Plotly](https://img.shields.io/badge/Plotly-5.0%2B-3f4f75.svg)
 ![Status](https://img.shields.io/badge/Status-Active-brightgreen.svg)
+
+> 🚀 **Live Interactive Web Application:**  
+> Access the deployed Decision Support System directly in your browser:  
+> 🔗 **[https://auto-leather-demand.streamlit.app/](https://auto-leather-demand.streamlit.app/)**
 
 ## Executive Summary
 
@@ -78,6 +84,8 @@ A granular shop-floor target matrix detailing projected seat covers per week. Th
 ---
 
 ## Local Setup & Execution
+
+> 💡 **Prefer not to run locally?** Test the live cloud-deployed dashboard immediately at: **[https://auto-leather-demand.streamlit.app/](https://auto-leather-demand.streamlit.app/)**
 
 To run the AutoLeather Intelligence dashboard on your local machine, follow these instructions:
 
